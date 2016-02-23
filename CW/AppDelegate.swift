@@ -1,22 +1,56 @@
 //
 //  AppDelegate.swift
-//  CW
+//  CenturyWind_
 //
-//  Created by 刘宗岱 on 16/2/19.
+//  Created by 刘宗岱 on 16/2/18.
 //  Copyright © 2016年 蓝之青. All rights reserved.
 //
 
 import UIKit
 import CoreData
+import ITRAirSideMenu
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var itrAirSideMenu:ITRAirSideMenu!
 
+    
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        self.window = UIWindow(frame:UIScreen.mainScreen().bounds)
+        let navigationController = UINavigationController(rootViewController:UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ViewController"))
+        let leftMenuViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LeftViewController") as! LeftViewController
+        
+        
+        itrAirSideMenu = ITRAirSideMenu(contentViewController: navigationController, leftMenuViewController: leftMenuViewController)
+        itrAirSideMenu.backgroundImage = UIImage(named: "menu_bg")
+        itrAirSideMenu.delegate = leftMenuViewController
+        
+        itrAirSideMenu.contentViewShadowColor = UIColor.blackColor()
+        itrAirSideMenu.contentViewShadowOffset = CGSizeMake(0, 0)
+        itrAirSideMenu.contentViewShadowOpacity = 0.6
+        itrAirSideMenu.contentViewShadowRadius = 12
+        itrAirSideMenu.contentViewShadowEnabled = true
+        
+        //content view animation properties
+        itrAirSideMenu.contentViewScaleValue = 0.7
+        itrAirSideMenu.contentViewRotatingAngle = 30.0
+        itrAirSideMenu.contentViewTranslateX = 130.0
+        
+        //menu view properties
+        itrAirSideMenu.menuViewRotatingAngle = 30.0
+        itrAirSideMenu.menuViewTranslateX = 130.0
+        
+        self.window!.rootViewController = itrAirSideMenu;
+        self.window!.backgroundColor = UIColor.whiteColor()
+        self.window!.makeKeyAndVisible()
+
+
+        
         return true
     }
 
@@ -47,14 +81,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var applicationDocumentsDirectory: NSURL = {
-        // The directory the application uses to store the Core Data store file. This code uses a directory named "LZQ.CW" in the application's documents Application Support directory.
+        // The directory the application uses to store the Core Data store file. This code uses a directory named "LZQ.CenturyWind_" in the application's documents Application Support directory.
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
         return urls[urls.count-1]
     }()
 
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("CW", withExtension: "momd")!
+        let modelURL = NSBundle.mainBundle().URLForResource("CenturyWind_", withExtension: "momd")!
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
 
